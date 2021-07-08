@@ -1,0 +1,236 @@
+############VBA Module 1
+
+Sub allocation_extraction()
+'
+' allocation_extraction Macro
+' extract allocation lines
+'
+
+'
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+    Application.DisplayStatusBar = False
+
+    
+
+    With Sheet1
+        
+        '.Range("$U$12:$Y$5507").AutoFilter Field:=21, Criteria1:= _
+        '"to allocate"
+        '.Range("$U$12:$Y$5507").AutoFilter Field:=22, Criteria1:= _
+        '"=Pending", Operator:=xlOr, Criteria2:="="
+        
+        
+        Set rndata = .Range("$U$12:$Y$9999")
+        With rndata
+            .AutoFilter field:=21, Criteria1:= _
+            "to allocate"
+            .AutoFilter field:=22, Criteria1:= _
+            "=Pending", Operator:=xlOr, Criteria2:="="
+            .AutoFilter field:=25, Criteria1:= _
+            "No"
+            .Select
+            For Each rngarea In .SpecialCells(xlCellTypeVisible).Areas
+                lcount = lcount + rngarea.Rows.Count
+                Next
+        End With
+
+        If lcount - 1 = 0 Then
+         'line length might need to extend again
+            Sheet1.Range("$U$12:$Y$9999").AutoFilter field:=21
+            Sheet1.Range("$U$12:$Y$9999").AutoFilter field:=22
+            MsgBox "No Allocation SKU/Order Lines Found."
+            Application.Calculation = xlCalculationAutomatic
+            Exit Sub
+        End If
+        
+        
+        'lcount = .AutoFilter.Range.Rows.SpecialCells(xlCellTypeVisible).Count
+        '
+        
+        'For Each rngarea In .SpecialCells(xlCellTypeVisible).Areas
+         '   lcount = lcount + rngarea.Rows.Count
+        'Next
+    
+    
+        
+        
+        
+        .Range("A12:T12").Select
+        .Range(Selection, Selection.End(xlDown)).Select
+    Selection.Copy
+    End With
+    
+    Sheet13.Select
+    Sheet13.Range("A19").PasteSpecial (xlPasteValues)
+    
+    
+    'line length might need to extend again
+    Sheet1.Range("$U$12:$Y$9999").AutoFilter field:=21
+    Sheet1.Range("$U$12:$Y$9999").AutoFilter field:=22
+    Sheet1.Range("$U$12:$Y$9999").AutoFilter field:=25
+    
+    
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+    Application.DisplayStatusBar = True
+
+    
+End Sub
+
+
+############VBA Module 2
+
+Sub loading_pending_allocation()
+'
+' Macro1 Macro
+'
+
+'
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+    Application.DisplayStatusBar = False
+    
+Dim rng, rng1 As Range
+Dim cell, cell2 As Range
+
+Set rng = Sheet13.Range("Allocation_Simulator[Allocation Code]")
+Set rng2 = Sheet13.Range("Allocation_Simulator[Allocation Comments]")
+
+For Each cell In rng
+    cell.Formula2R1C1 = _
+        "=IFERROR(INDEX(Posted_Allocation_Log[#All],MATCH([@SKU]&[@[Order/Opp ID]],Posted_Allocation_Log[[#All],[SKU]]&Posted_Allocation_Log[[#All],[Order/Opp ID]],0),9),"""")"
+    cell.Copy
+    cell.PasteSpecial (xlPasteValues)
+
+Next cell
+
+For Each cell2 In rng2
+    cell2.Formula2R1C1 = _
+        "=IFERROR(INDEX(Posted_Allocation_Log[#All],MATCH([@SKU]&[@[Order/Opp ID]],Posted_Allocation_Log[[#All],[SKU]]&Posted_Allocation_Log[[#All],[Order/Opp ID]],0),11),"""")"
+    cell2.Copy
+    cell2.PasteSpecial (xlPasteValues)
+
+Next cell2
+
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+    Application.DisplayStatusBar = True
+
+
+End Sub
+
+############VBA Module 3
+
+
+
+Sub Sort_Log()
+'
+' Sort_Log Macro
+'
+
+'
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+    Application.DisplayStatusBar = False
+    
+    ActiveWorkbook.Worksheets("Posted Allocation Log").ListObjects( _
+        "Posted_Allocation_Log").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("Posted Allocation Log").ListObjects( _
+        "Posted_Allocation_Log").Sort.SortFields.Add2 Key:=Range( _
+        "Posted_Allocation_Log[Post Date]"), SortOn:=xlSortOnValues, Order:= _
+        xlDescending, DataOption:=xlSortNormal
+    ActiveWorkbook.Worksheets("Posted Allocation Log").ListObjects( _
+        "Posted_Allocation_Log").Sort.SortFields.Add2 Key:=Range( _
+        "Posted_Allocation_Log[Allocation Code]"), SortOn:=xlSortOnValues, Order:= _
+        xlAscending, CustomOrder:="Full,Partial,None,Cancellation Pending,Pending", DataOption:= _
+        xlSortNormal
+    With ActiveWorkbook.Worksheets("Posted Allocation Log").ListObjects( _
+        "Posted_Allocation_Log").Sort
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+    Application.DisplayStatusBar = True
+    
+End Sub
+
+
+############VBA Module 4
+
+Sub Post_Allocation()
+'
+' Macro1 Macro
+'
+
+'
+
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+    Application.DisplayStatusBar = False
+    
+Dim lastRow As Long
+Dim tbl As ListObject
+Set tbl = Sheet13.ListObjects("Allocation_Simulator")
+'MsgBox WorksheetFunction.CountA(Range(tbl))
+If WorksheetFunction.CountA(Range(tbl)) = 0 Then
+         
+            MsgBox "No Allocation Lines to Post"
+            Application.Calculation = xlCalculationAutomatic
+            Exit Sub
+        End If
+
+With Sheet13.ListObjects("Allocation_Simulator")
+     Union(.ListColumns(1).DataBodyRange, _
+          .ListColumns(2).DataBodyRange, _
+          .ListColumns(3).DataBodyRange, _
+          .ListColumns(4).DataBodyRange, _
+          .ListColumns(5).DataBodyRange, _
+          .ListColumns(6).DataBodyRange, _
+          .ListColumns(9).DataBodyRange, _
+          .ListColumns(11).DataBodyRange, _
+          .ListColumns(22).DataBodyRange, _
+          .ListColumns(23).DataBodyRange, _
+          .ListColumns(24).DataBodyRange, _
+          .ListColumns(25).DataBodyRange, _
+          .ListColumns(26).DataBodyRange, _
+          .ListColumns(27).DataBodyRange).Select
+
+End With
+
+Selection.Copy
+
+Sheet5.Select
+With Sheet5
+    lastRow = .ListObjects("Posted_Allocation_Log").ListColumns(1).Range.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
+    'MsgBox lastRow + 1
+    
+    Range("A" & lastRow + 1).Select
+End With
+
+
+
+
+'    Sheets("Posted Allocation Log").Select
+
+'    Range("A226").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+  Sheet13.ListObjects("Allocation_Simulator").DataBodyRange.Rows.Delete
+       
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+    Application.DisplayStatusBar = True
+        
+
+End Sub
+
+
+
+
