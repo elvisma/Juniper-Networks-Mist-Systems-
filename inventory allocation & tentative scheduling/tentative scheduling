@@ -1,0 +1,735 @@
+######### VBA module 1
+Sub order_line_extraction()
+'
+' test_extraction Macro
+'
+
+'
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+    Application.DisplayStatusBar = False
+   
+   Sheet3.Select
+   Selection.AutoFilter
+    'change color start
+   Dim i As Integer
+    
+    For i = 1 To 24
+        Sheet4.ListObjects("simulator").Range.AutoFilter Field:=i
+        
+    Next i
+   Sheet4.Select
+    
+    Range("simulator[Order/Opp ID]").Select
+
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    
+    'change color end
+    
+   Dim tbl As ListObject
+   Set tbl = Sheet4.ListObjects("simulator")
+   If WorksheetFunction.CountA(Range(tbl)) > 0 Then
+        tbl.DataBodyRange.Rows.Delete
+   End If
+   
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=1
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=3
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=8
+    'Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=9
+
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=1, Criteria1 _
+        :=Sheet4.Range("B3")
+        
+
+
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=3, Criteria1 _
+        :=Sheet4.Range("B2")
+        
+    
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=8, Criteria1 _
+        :="Booked"
+    
+    Sheet3.Select
+    Sheet3.ListObjects("total_deals").Range.Select
+
+    Selection.Copy
+   
+   
+    Sheet4.Select
+    Range("A18").PasteSpecial (xlPasteValues)
+      
+      'change color start
+    
+    Range("simulator[Product Code]").Select
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorAccent4
+        .TintAndShade = 0.799981688894314
+        .PatternTintAndShade = 0
+    End With
+    
+    Range("simulator[Warehouse]").Select
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorAccent4
+        .TintAndShade = 0.799981688894314
+        .PatternTintAndShade = 0
+    End With
+ 
+  'change color end
+  
+    
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=1
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=3
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=8
+    'Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=9
+    
+    
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+    Application.DisplayStatusBar = True
+             
+End Sub
+
+
+
+
+
+
+
+
+
+######### VBA module 2
+Sub commit_deal_extraction()
+'
+' test_extraction Macro
+'
+
+'
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+    Application.DisplayStatusBar = False
+    Sheet3.Select
+    Selection.AutoFilter
+     'change color start
+    Dim i As Integer
+    
+    For i = 1 To 24
+        Sheet4.ListObjects("simulator").Range.AutoFilter Field:=i
+        
+    Next i
+    
+    Sheet4.Select
+    
+    Range("simulator[Order/Opp ID]").Select
+
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    
+    'change color end
+ 
+    Dim tbl As ListObject
+    Set tbl = Sheet4.ListObjects("simulator")
+    If WorksheetFunction.CountA(Range(tbl)) > 0 Then
+            tbl.DataBodyRange.Rows.Delete
+    End If
+   
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=1
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=3
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=10
+    'Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=9
+
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=1, Criteria1 _
+        :=Sheet4.Range("B3")
+        
+
+
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=3, Criteria1 _
+        :=Sheet4.Range("B2")
+        
+   
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=10, Criteria1 _
+        :="<>NA"
+    
+ 
+    Sheet3.Select
+    Sheet3.ListObjects("total_deals").Range.Select
+
+    Selection.Copy
+   
+   
+    Sheet4.Select
+    Range("A18").PasteSpecial (xlPasteValues)
+    
+      'change color start
+    
+    Range("simulator[Product Code]").Select
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorAccent4
+        .TintAndShade = 0.799981688894314
+        .PatternTintAndShade = 0
+    End With
+    Range("simulator[Warehouse]").Select
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorAccent4
+        .TintAndShade = 0.799981688894314
+        .PatternTintAndShade = 0
+    End With
+ 
+  'change color end
+  
+    
+    
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=1
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=3
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=10
+    'Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=9
+       
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+    Application.DisplayStatusBar = True
+             
+End Sub
+
+
+
+
+
+######### VBA module 3
+
+
+Sub order_extraction()
+'
+' test_extraction Macro
+'
+
+'
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+    Application.DisplayStatusBar = False
+   
+   
+    Sheet3.Select
+    Selection.AutoFilter
+   
+   'change color start
+    'Dim i As Integer
+    
+    For i = 1 To 24
+        Sheet4.ListObjects("simulator").Range.AutoFilter Field:=i
+        
+    Next i
+    Sheet4.Select
+    
+    Range("simulator[Product Code]").Select
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    Range("simulator[Warehouse]").Select
+    With Selection.Interior
+         .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+ 
+  'change color end
+  
+  
+    Dim tbl As ListObject
+    Set tbl = Sheet4.ListObjects("simulator")
+
+    
+    If WorksheetFunction.CountA(Range(tbl)) = 0 Then
+        Exit Sub
+    
+    End If
+    'Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=7
+    Sheet3.ListObjects("total_deals").Range.AdvancedFilter Action:=xlFilterInPlace, _
+        CriteriaRange:=Sheets("Simulation").Range("simulator[[#All],[Order/Opp ID]]") _
+        , Unique:=False
+   
+   Sheet3.Select
+        Sheet3.ListObjects("total_deals").Range.Select
+   Selection.Copy
+   Sheet4.Range("A18").PasteSpecial (xlPasteValues)
+   Sheet3.ShowAllData
+   Selection.AutoFilter
+   
+   
+   Sheet4.Select
+   
+   Range("simulator[Order/Opp ID]").Select
+    'Selection.AutoFilter
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorAccent2
+        .TintAndShade = 0.399975585192419
+        .PatternTintAndShade = 0
+    End With
+         
+
+   
+   
+   
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+    Application.DisplayStatusBar = True
+             
+End Sub
+
+
+
+
+
+
+
+
+
+######### VBA module 4
+
+Sub Post_Allocation()
+'
+' Macro1 Macro
+'
+
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+    Application.DisplayStatusBar = False
+
+
+    Dim lastRow As Long
+    Dim tbl As ListObject
+    Set tbl = Sheet4.ListObjects("simulator")
+
+   ' If WorksheetFunction.CountA(Range(tbl)) = 0 Then
+     If WorksheetFunction.CountA(Range("simulator[Allocation QTY]")) = 0 Then
+     
+            MsgBox "No Allocation Lines to Post"
+            Application.Calculation = xlCalculationAutomatic
+            Exit Sub
+    End If
+    
+    With Sheet4.ListObjects("simulator")
+    
+        'ONLY POST QTY>0, AND NOT SHOWN IN THE ARCHIVE BEFORE
+    
+        Sheet4.ListObjects("simulator").Range.AutoFilter Field:=20, Criteria1 _
+        :="<>"
+        'Sheet4.ListObjects("simulator").Range.AutoFilter Field:=16, Criteria1 _
+        ':="N"
+        
+            
+        Union(.ListColumns(1).DataBodyRange, _
+          .ListColumns(2).DataBodyRange, _
+          .ListColumns(3).DataBodyRange, _
+          .ListColumns(4).DataBodyRange, _
+          .ListColumns(7).DataBodyRange, _
+          .ListColumns(11).DataBodyRange, _
+          .ListColumns(12).DataBodyRange, _
+          .ListColumns(20).DataBodyRange, _
+          .ListColumns(21).DataBodyRange, _
+          .ListColumns(22).DataBodyRange, _
+          .ListColumns(23).DataBodyRange).Select
+
+    End With
+
+    Selection.Copy
+    Sheet7.Select
+    
+    With Sheet7
+     
+        lastRow = .ListObjects("allocation_archive").ListColumns(1).Range.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
+        'MsgBox lastRow + 1
+    
+        Range("A" & lastRow + 1).Select
+    End With
+
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    
+    'Sheet4.ListObjects("simulator").Select
+    Sheet4.Select
+    Sheet4.ListObjects("simulator").DataBodyRange.Select
+    Selection.EntireRow.Delete
+    
+    
+    'unfilter potential checked columns
+    Dim i As Integer
+    
+    For i = 1 To 24
+        Sheet4.ListObjects("simulator").Range.AutoFilter Field:=i
+        
+    Next i
+    
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+    Application.DisplayStatusBar = True
+             
+ 
+
+
+
+
+End Sub
+
+
+
+
+
+
+
+######### VBA module 5
+
+Sub supply_deals_running()
+
+
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+    Application.DisplayStatusBar = False
+
+    'remove the old tab
+    
+    Sheet9.Select
+    If WorksheetFunction.CountA(Range("supply_deal_run[Line QTY]")) > 0 Then
+        Sheet9.ListObjects("supply_deal_run").DataBodyRange.Interior.Color = xlNone
+        Sheet9.ListObjects("supply_deal_run").DataBodyRange.Select
+        Selection.EntireRow.Delete
+    End If
+
+    Dim lastRow As Long
+
+    'get the deals
+        
+    Sheet3.Select
+    With Sheet3.ListObjects("total_deals")
+    
+        .Range.AutoFilter Field:=1, Criteria1 _
+        :=Sheet4.Range("B3")
+        
+
+
+        .Range.AutoFilter Field:=3, Criteria1 _
+        :=Sheet4.Range("B2")
+    
+         Union(.ListColumns(1).DataBodyRange, _
+          .ListColumns(3).DataBodyRange, _
+          .ListColumns(14).DataBodyRange, _
+          .ListColumns(15).DataBodyRange, _
+          .ListColumns(16).DataBodyRange).Select
+       
+    
+
+
+    End With
+    
+    Selection.Copy
+    Sheet9.Select
+    With Sheet9
+        Range("C4").Select
+        
+        'lastRow = .ListObjects("supply_deal_run").ListColumns(1).Range.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
+        
+        'Range("C" & lastRow + 1).Select
+    
+    End With
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    
+    
+    Sheet3.Select
+    With Sheet3.ListObjects("total_deals")
+    
+    Union(.ListColumns(4).DataBodyRange, _
+          .ListColumns(7).DataBodyRange, _
+          .ListColumns(8).DataBodyRange, _
+          .ListColumns(11).DataBodyRange, _
+          .ListColumns(12).DataBodyRange, _
+          .ListColumns(13).DataBodyRange).Select
+    
+    
+    End With
+    
+    Selection.Copy
+    Sheet9.Select
+    With Sheet9
+        Range("H4").Select
+        
+        'lastRow = .ListObjects("supply_deal_run").ListColumns(1).Range.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
+        
+        'Range("C" & lastRow + 1).Select
+    
+    End With
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    
+    
+    Sheet3.Select
+
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=1
+    Sheet3.ListObjects("total_deals").Range.AutoFilter Field:=3
+
+    
+
+
+
+    'get supplies
+    
+      'get the On Hand QTY
+    Sheet8.Select
+    With Sheet8.ListObjects("Database")
+    
+        .Range.AutoFilter Field:=1, Criteria1 _
+        :=Sheet4.Range("B3")
+        
+
+        
+        .Range.AutoFilter Field:=2, Criteria1 _
+        :=Sheet4.Range("B2")
+    
+         Union(.ListColumns(1).DataBodyRange, _
+          .ListColumns(2).DataBodyRange, _
+          .ListColumns(4).DataBodyRange, _
+          .ListColumns(5).DataBodyRange, _
+          .ListColumns(6).DataBodyRange).Select
+       
+    
+
+
+    End With
+    
+    Selection.Copy
+    
+    Sheet9.Select
+    With Sheet9
+    
+        lastRow = .ListObjects("supply_deal_run").ListColumns(1).Range.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
+            
+        Range("C" & lastRow + 1).Select
+    End With
+    
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    Sheet8.Select
+    Sheet8.ListObjects("Database").ListColumns(7).DataBodyRange.Select
+    Selection.Copy
+    Sheet9.Select
+    Sheet9.Range("J" & lastRow + 1).Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+
+    
+    'get the total_supply
+    
+    Dim lastrow_check As Long
+    
+    
+    Sheet5.Select
+    With Sheet5.ListObjects("total_supply")
+    
+        .Range.AutoFilter Field:=1, Criteria1 _
+        :=Sheet4.Range("B3")
+        
+
+
+        .Range.AutoFilter Field:=2, Criteria1 _
+        :=Sheet4.Range("B2")
+        
+        lastrow_check = .ListColumns(1).Range.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
+    
+        If lastrow_check > 1 Then
+            Union(.ListColumns(1).DataBodyRange, _
+                .ListColumns(2).DataBodyRange, _
+                .ListColumns(3).DataBodyRange, _
+                .ListColumns(8).DataBodyRange, _
+                .ListColumns(9).DataBodyRange).Select
+        Else:
+            
+            Sheet8.ListObjects("Database").Range.AutoFilter Field:=1
+            Sheet8.ListObjects("Database").Range.AutoFilter Field:=2
+            Sheet5.ListObjects("total_supply").Range.AutoFilter Field:=1
+            Sheet5.ListObjects("total_supply").Range.AutoFilter Field:=2
+            Sheet9.Select
+            Application.Calculation = xlCalculationAutomatic
+            Application.ScreenUpdating = True
+            Application.DisplayStatusBar = True
+            Exit Sub
+            
+        End If
+    
+
+
+    End With
+    
+
+  
+    
+    Selection.Copy
+    
+    
+    
+    
+    
+    
+    Sheet9.Select
+    With Sheet9
+    
+        lastRow = .ListObjects("supply_deal_run").ListColumns(1).Range.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
+            
+        Range("C" & lastRow + 1).Select
+    End With
+    
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    Sheet5.Select
+    Sheet5.ListObjects("total_supply").ListColumns(10).DataBodyRange.Select
+    Selection.Copy
+    Sheet9.Select
+    Sheet9.Range("J" & lastRow + 1).Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    
+    
+    
+    Sheet8.ListObjects("Database").Range.AutoFilter Field:=1
+    Sheet8.ListObjects("Database").Range.AutoFilter Field:=2
+    Sheet5.ListObjects("total_supply").Range.AutoFilter Field:=1
+    Sheet5.ListObjects("total_supply").Range.AutoFilter Field:=2
+    
+    
+    'sort the log
+    
+    
+
+
+
+
+
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+    Application.DisplayStatusBar = True
+
+
+End Sub
+
+
+######### VBA module 6
+
+Sub sort_running()
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+    Application.DisplayStatusBar = False
+
+    Dim lastrow_check As Long
+    
+    Sheet9.Select
+    With Sheet9.ListObjects("supply_deal_run")
+        .Range.AutoFilter Field:=4, Criteria1:="Supply"
+             lastrow_check = .ListColumns(1).Range.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
+            If lastrow_check > 3 Then
+                .DataBodyRange.SpecialCells(xlCellTypeVisible).Interior.Color = RGB(204, 255, 204)
+            End If
+          
+        .Range.AutoFilter Field:=4, Criteria1:="BKLG (cmtd)"
+             lastrow_check = .ListColumns(1).Range.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
+             If lastrow_check > 3 Then
+                .DataBodyRange.SpecialCells(xlCellTypeVisible).Interior.Color = RGB(204, 229, 255)
+            End If
+            
+        .Range.AutoFilter Field:=4, Criteria1:="BKLG (non-cmtd)"
+             lastrow_check = .ListColumns(1).Range.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
+            If lastrow_check > 3 Then
+                .DataBodyRange.SpecialCells(xlCellTypeVisible).Interior.Color = RGB(255, 212, 204)
+            End If
+            
+        .Range.AutoFilter Field:=4, Criteria1:="Commit"
+             lastrow_check = .ListColumns(1).Range.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
+            
+            If lastrow_check > 3 Then
+                .DataBodyRange.SpecialCells(xlCellTypeVisible).Interior.Color = RGB(255, 229, 204)
+            End If
+            
+
+   
+    
+    End With
+    
+      Sheet9.ListObjects("supply_deal_run").Range.AutoFilter Field:=4
+    
+        Sheet9.ListObjects( _
+        "supply_deal_run").Sort.SortFields.Clear
+      
+   
+    Sheet9.ListObjects( _
+        "supply_deal_run").Sort.SortFields.Add2 Key:=Range( _
+        "supply_deal_run[Consolidated Date]"), SortOn:=xlSortOnValues, Order:= _
+        xlAscending, DataOption:=xlSortNormal
+    Sheet9.ListObjects( _
+        "supply_deal_run").Sort.SortFields.Add2 Key:=Range( _
+        "supply_deal_run[Line Stage]"), SortOn:=xlSortOnValues, Order:= _
+        xlDescending, CustomOrder:="in-transit, On Hand", DataOption:=xlSortNormal
+    'Sheet9.ListObjects( _
+    '    "supply_deal_run").Sort.SortFields.Add2 Key:=Range( _
+    '    "supply_deal_run[WK reference]"), SortOn:=xlSortOnValues, Order:= _
+    '    xlAscending, DataOption:=xlSortNormal
+        
+    Sheet9.ListObjects( _
+        "supply_deal_run").Sort.SortFields.Add2 Key:=Range( _
+        "supply_deal_run[Line Category]"), SortOn:=xlSortOnValues, Order:= _
+        xlAscending, CustomOrder:="Supply, BKLG (cmtd), BKLG (non-cmtd), Commit", DataOption:=xlSortNormal
+        
+    Sheet9.ListObjects( _
+        "supply_deal_run").Sort.SortFields.Add2 Key:=Range( _
+        "supply_deal_run[Line QTY]"), SortOn:=xlSortOnValues, Order:= _
+        xlDescending, DataOption:=xlSortNormal
+
+    
+    With Sheet9.ListObjects( _
+        "supply_deal_run").Sort
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+    
+    
+    Range("supply_deal_run[running total]").Select
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    
+    With Sheet9
+        .Range("Q4").Select
+        .Range(Selection, Selection.End(xlDown)).Select
+        Selection.FormulaR1C1 = "=SUM(R4C16:RC16)"
+        
+    End With
+      
+    
+    
+      
+      
+      
+      
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+    Application.DisplayStatusBar = True
+    
+    
+      
+End Sub
+
+
